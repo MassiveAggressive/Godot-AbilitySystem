@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AttributeSetBase" load_steps=4 format=3 uid="uid://cie0jf8re8gog"]
+
+[ext_resource type="Script" uid="uid://cawe0ja1u8k2r" path="res://Core/AttributeSystem/AttributeData/AttributeData.gd" id="1_p7w8f"]
+[ext_resource type="Script" uid="uid://cgutah85t6h8k" path="res://Core/AttributeSystem/AttributeSetBase.gd" id="2_jpww4"]
+
+[sub_resource type="Resource" id="Resource_p7w8f"]
+script = ExtResource("1_p7w8f")
+value = 100.0
+metadata/_custom_type_script = "uid://cawe0ja1u8k2r"
+
+[resource]
+script = ExtResource("2_jpww4")
+attribute_set_name = "AttributeSetBase"
+attributes = Dictionary[String, ExtResource("1_p7w8f")]({
+"Health": SubResource("Resource_p7w8f")
+})
+metadata/_custom_type_script = "uid://cgutah85t6h8k"
