@@ -11,7 +11,7 @@ script/source = "extends Sprite2D
 @onready var ability_system: AbilitySystemBase = %AbilitySystemBase
 
 func _ready() -> void:
-	var effect: EffectData = preload(\"uid://d1tpxxv3shuw8\")
+	var effect: EffectData = preload(\"uid://d334ypkts7cjk\")
 	var effect_spec: EffectSpec = ability_system.MakeEffectSpec(effect)
 	ability_system.ApplyEffectSpecToSelf(effect_spec)
 "

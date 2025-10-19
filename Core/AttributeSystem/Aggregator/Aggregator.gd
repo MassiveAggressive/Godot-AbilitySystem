@@ -1,7 +1,7 @@
 class_name Aggregator extends RefCounted
 
 @export var attribute: AttributeData
-@export var modifiers: Array[AttributeModifier]
+@export var modifiers: Dictionary[ActiveEffectHandle, AttributeModifierArray]
 
 var additive_modifiers: Array[float]
 var multiplicative_modifiers: Array[float]
@@ -10,8 +10,11 @@ var overrider_modifiers: Array[float]
 func _init(_attribute: AttributeData) -> void:
 	attribute = _attribute
 
-func AddModifier(modifier: AttributeModifier) -> void:
-	modifiers.append(modifier)
+func AddModifier(active_effect_handle: ActiveEffectHandle, modifier: AttributeModifier) -> void:
+	if !modifiers.has(active_effect_handle):
+		modifiers[active_effect_handle] = AttributeModifierArray.new()
+	
+	modifiers[active_effect_handle].array.append(modifier)
 
 func RemoveModifier(modifier: AttributeModifier) -> void:
 	modifiers.erase(modifier)
@@ -23,16 +26,17 @@ func Calculate() -> float:
 	
 	var value_result: float = 0.0
 	
-	for modifier in modifiers:
-		match modifier.operator:
-			Util.EOperator.ADD:
-				additive_modifiers.append(modifier.magnitude * modifier.coefficient)
-			Util.EOperator.MULTIPLY:
-				multiplicative_modifiers.append(modifier.magnitude * modifier.coefficient)
-			Util.EOperator.DIVIDE:
-				multiplicative_modifiers.append(1 / (modifier.magnitude * modifier.coefficient))
-			Util.EOperator.OVERRIDE:
-				overrider_modifiers.append(modifier.magnitude * modifier.coefficient)
+	for handle in modifiers:
+		for modifier in modifiers[handle].array:
+			match modifier.operator:
+				Util.EOperator.ADD:
+					additive_modifiers.append(modifier.magnitude * modifier.coefficient)
+				Util.EOperator.MULTIPLY:
+					multiplicative_modifiers.append(modifier.magnitude * modifier.coefficient)
+				Util.EOperator.DIVIDE:
+					multiplicative_modifiers.append(1 / (modifier.magnitude * modifier.coefficient))
+				Util.EOperator.OVERRIDE:
+					overrider_modifiers.append(modifier.magnitude * modifier.coefficient)
 				
 	var additive_total: float = 0.0
 	

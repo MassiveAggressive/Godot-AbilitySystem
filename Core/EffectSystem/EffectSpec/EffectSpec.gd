@@ -1,18 +1,27 @@
+@tool
 class_name EffectSpec extends Resource
 
 var source_ability_system: AbilitySystemBase
-var source_effect_data: EffectData
+@export var source_effect_data: EffectData:
+	set(value):
+		source_effect_data = value
+		if source_effect_data:
+			duration_policy = source_effect_data.duration_policy
+			duration = source_effect_data.duration
+			modifiers = source_effect_data.modifiers
 
-var duration_policy: Util.EDurationPolicy
-var duration: float
-var modifiers: Dictionary[AttributePicker, AttributeModifier]
+@export var duration_policy: Util.EDurationPolicy
+@export var duration: float
+@export var modifiers: Dictionary[AttributePicker, AttributeModifier]
 
-func _init(_source_ability_system: AbilitySystemBase, _source_effect_data: EffectData) -> void:
-	source_ability_system = _source_ability_system
-	source_effect_data = _source_effect_data
-	duration_policy = source_effect_data.duration_policy
-	duration = source_effect_data.duration
-	modifiers = source_effect_data.modifiers.duplicate_deep()
+func _init(_source_ability_system: AbilitySystemBase = null, _source_effect_data: EffectData = null) -> void:
+	if _source_ability_system:
+		source_ability_system = _source_ability_system
+		if _source_effect_data:
+			source_effect_data = _source_effect_data
+			duration_policy = source_effect_data.duration_policy
+			duration = source_effect_data.duration
+			modifiers = source_effect_data.modifiers.duplicate_deep()
 
 func AddModifier(attribute_name: String, attribute_modifier: AttributeModifier) -> void:
 	var attribute_picker: AttributePicker = AttributePicker.new(attribute_name)
