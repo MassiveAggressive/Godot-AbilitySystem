@@ -16,8 +16,8 @@ func AddModifier(active_effect_handle: ActiveEffectHandle, modifier: AttributeMo
 	
 	modifiers[active_effect_handle].array.append(modifier)
 
-func RemoveModifier(modifier: AttributeModifier) -> void:
-	modifiers.erase(modifier)
+func RemoveModifier(active_effect_handle: ActiveEffectHandle) -> void:
+	modifiers.erase(active_effect_handle)
 
 func Calculate() -> float:
 	additive_modifiers.clear()

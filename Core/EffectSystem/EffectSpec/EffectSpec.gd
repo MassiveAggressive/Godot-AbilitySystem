@@ -12,6 +12,7 @@ var source_ability_system: AbilitySystemBase
 
 @export var duration_policy: Util.EDurationPolicy
 @export var duration: float
+@export var period: float
 @export var modifiers: Dictionary[AttributePicker, AttributeModifier]
 
 func _init(_source_ability_system: AbilitySystemBase = null, _source_effect_data: EffectData = null) -> void:
@@ -21,6 +22,7 @@ func _init(_source_ability_system: AbilitySystemBase = null, _source_effect_data
 			source_effect_data = _source_effect_data
 			duration_policy = source_effect_data.duration_policy
 			duration = source_effect_data.duration
+			period = source_effect_data.period
 			modifiers = source_effect_data.modifiers.duplicate_deep()
 
 func AddModifier(attribute_name: String, attribute_modifier: AttributeModifier) -> void:

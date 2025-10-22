@@ -23,19 +23,16 @@ func MakeEffectSpec(effect_data: EffectData) -> EffectSpec:
 
 func ApplyEffectSpecToSelf(effect_spec: EffectSpec) -> ActiveEffectHandle:
 	var new_id: int = CreateNewID()
-	var active_effect: ActiveEffect = ActiveEffect.new(self, effect_spec)
+	var active_effect_handle: ActiveEffectHandle = ActiveEffectHandle.new(self, new_id)
+	var active_effect: ActiveEffect = ActiveEffect.new(self, effect_spec, active_effect_handle)
 	
 	active_effects[new_id] = active_effect
 	
-	var active_effect_handle: ActiveEffectHandle = ActiveEffectHandle.new(self, new_id)
-	
-	active_effect.affected_aggregator = SetupModifiers(effect_spec.modifiers, effect_spec.duration_policy, active_effect_handle)
+	active_effect.ApplyEffect()
 	
 	return active_effect_handle
 
-func SetupModifiers(modifiers: Dictionary[AttributePicker, AttributeModifier], duration_policy: Util.EDurationPolicy, active_effect_handle: ActiveEffectHandle) -> Dictionary[String, Aggregator]:
-	var affected_aggregators: Dictionary[String, Aggregator]
-	
+func SetupModifiers(modifiers: Dictionary[AttributePicker, AttributeModifier], duration_policy: Util.EDurationPolicy, active_effect_handle: ActiveEffectHandle) -> void:
 	for attribute_picker in modifiers:
 		var modifier: AttributeModifier = modifiers[attribute_picker]
 		var attribute_set_name: String = attribute_picker.attribute.get_slice(".", 0)
@@ -67,10 +64,6 @@ func SetupModifiers(modifiers: Dictionary[AttributePicker, AttributeModifier], d
 				
 				attribute_set.PreAttributeChange(attribute_name, new_value)
 				attribute_set.SetAttributeCurrentValue(attribute_name, new_value.value)
-				
-		affected_aggregators[attribute_picker.attribute] = aggregator
-	
-	return affected_aggregators
 
 func RemoveModifiers() -> void:
 	pass

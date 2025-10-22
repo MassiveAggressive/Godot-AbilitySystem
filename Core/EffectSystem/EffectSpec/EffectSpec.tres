@@ -12,13 +12,13 @@ metadata/_custom_type_script = "uid://dkjk6xo1nm3f2"
 
 [sub_resource type="Resource" id="Resource_6gkxx"]
 script = ExtResource("2_1nc22")
-magnitude = -10.0
+magnitude = -120.0
 metadata/_custom_type_script = "uid://bsqkg78t6rya7"
 
 [resource]
 script = ExtResource("1_txna7")
 source_effect_data = ExtResource("4_e35ku")
-duration = 10.0
+period = null
 modifiers = Dictionary[ExtResource("1_bcmfc"), ExtResource("2_1nc22")]({
 SubResource("Resource_5c0cf"): SubResource("Resource_6gkxx")
 })
