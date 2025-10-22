@@ -5,7 +5,10 @@ var handle: ActiveEffectHandle
 
 var source_effect_spec: EffectSpec
 
-var affected_aggregator: Dictionary[String, Aggregator]
+var duration_interval_id: int
+var period_interval_id: int
+
+var affected_aggregators: Dictionary[String, Aggregator]
 
 func _init(_target_ability_system: AbilitySystemBase, _source_effect_spec: EffectSpec, _handle: ActiveEffectHandle) -> void:
 	target_ability_system = _target_ability_system
@@ -15,18 +18,21 @@ func _init(_target_ability_system: AbilitySystemBase, _source_effect_spec: Effec
 func ApplyEffect() -> void:
 	match source_effect_spec.duration_policy:
 		Util.EDurationPolicy.INSTANT, Util.EDurationPolicy.INFINITE:
-			target_ability_system.SetupModifiers(source_effect_spec.modifiers, source_effect_spec.duration_policy, handle)
+			affected_aggregators = target_ability_system.SetupModifiers(source_effect_spec.modifiers, source_effect_spec.duration_policy, handle)
 		Util.EDurationPolicy.DURATION:
 			if source_effect_spec.period > 0.0:
-				target_ability_system.SetupModifiers(source_effect_spec.modifiers, Util.EDurationPolicy.INSTANT, handle)
-				TimerManager.CreateInterval(self, Period, source_effect_spec.period, false)
+				affected_aggregators = target_ability_system.SetupModifiers(source_effect_spec.modifiers, Util.EDurationPolicy.INSTANT, handle)
+				period_interval_id = TimerManager.CreateInterval(self, Period, source_effect_spec.period, false)
 			else:
-				target_ability_system.SetupModifiers(source_effect_spec.modifiers, source_effect_spec.duration_policy, handle)
+				affected_aggregators = target_ability_system.SetupModifiers(source_effect_spec.modifiers, source_effect_spec.duration_policy, handle)
 				
-			TimerManager.CreateInterval(target_ability_system, target_ability_system.RemoveActiveEffectByHandle.bind(handle), source_effect_spec.duration)
+			duration_interval_id = TimerManager.CreateInterval(target_ability_system, target_ability_system.RemoveActiveEffectByHandle.bind(handle), source_effect_spec.duration)
 
 func RemoveEffect() -> void:
-	pass
+	if source_effect_spec.period > 0.0:
+		TimerManager.RemoveInterval(period_interval_id)
+		
+	target_ability_system.RemoveModifiers(affected_aggregators.keys(), handle)
 
 func Period() -> void:
 	target_ability_system.SetupModifiers(source_effect_spec.modifiers, Util.EDurationPolicy.INSTANT, handle)

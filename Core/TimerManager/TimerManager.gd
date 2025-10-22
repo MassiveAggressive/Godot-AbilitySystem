@@ -37,13 +37,19 @@ func CreateInterval(_owner: Object, method: Callable, duration: float, one_shot:
 	
 	intervals[new_id] = new_interval
 	
-	timer.timeout.connect(OnTimerTimeout.bind(new_id))
-	timer.start(0)
+	timer.timeout.connect(OnIntervalTimeout.bind(new_id))
+	timer.start()
 	
 	return new_id
+
+func RemoveInterval(id: int) -> void:
+	intervals[id].timer.queue_free()
+	intervals.erase(id)
 
 func OnSceneChanged() -> void:
 	CreateTimerHolder()
 
-func OnTimerTimeout(id: int) -> void:
+func OnIntervalTimeout(id: int) -> void:
 	intervals[id].method.call()
+	if intervals[id].one_shot:
+		RemoveInterval(id)
