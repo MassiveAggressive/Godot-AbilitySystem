@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AttributeModifierData" load_steps=2 format=3 uid="uid://dbxwg6dkf5s0o"]
+
+[ext_resource type="Script" uid="uid://2bc4l6qsoi3" path="res://Core/AttributeSystem/AttributeModifierData/AttributeModifierData.gd" id="1_s2wvf"]
+
+[resource]
+script = ExtResource("1_s2wvf")
+attribute = "AttributeSetBase.Health"
+metadata/_custom_type_script = "uid://2bc4l6qsoi3"

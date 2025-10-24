@@ -1,24 +1,25 @@
 [gd_resource type="Resource" script_class="EffectData" load_steps=6 format=3 uid="uid://d334ypkts7cjk"]
 
-[ext_resource type="Script" uid="uid://dkjk6xo1nm3f2" path="res://Core/AttributeSystem/AttributePicker/AttributePicker.gd" id="1_3u5r2"]
+[ext_resource type="Script" uid="uid://2bc4l6qsoi3" path="res://Core/AttributeSystem/AttributeModifierData/AttributeModifierData.gd" id="1_xfk4h"]
 [ext_resource type="Script" uid="uid://bsqkg78t6rya7" path="res://Core/AttributeSystem/AttributeModifier/AttributeModifier.gd" id="2_xfk4h"]
 [ext_resource type="Script" uid="uid://cp3a3p1xfgyd2" path="res://Core/EffectSystem/EffectData/EffectData.gd" id="3_p08t4"]
 
-[sub_resource type="Resource" id="Resource_5c0cf"]
-script = ExtResource("1_3u5r2")
-attribute = "AttributeSetBase.Health"
-metadata/_custom_type_script = "uid://dkjk6xo1nm3f2"
-
-[sub_resource type="Resource" id="Resource_6gkxx"]
+[sub_resource type="Resource" id="Resource_3u5r2"]
 script = ExtResource("2_xfk4h")
-magnitude = -120.0
+magnitude = -1.0
 metadata/_custom_type_script = "uid://bsqkg78t6rya7"
+
+[sub_resource type="Resource" id="Resource_xfk4h"]
+script = ExtResource("1_xfk4h")
+attribute = "AttributeSetBase.Health"
+modifier = SubResource("Resource_3u5r2")
+metadata/_custom_type_script = "uid://2bc4l6qsoi3"
 
 [resource]
 script = ExtResource("3_p08t4")
 duration_policy = 1
-duration = 3.0
-modifiers = Dictionary[ExtResource("1_3u5r2"), ExtResource("2_xfk4h")]({
-SubResource("Resource_5c0cf"): SubResource("Resource_6gkxx")
-})
+duration = 2.0
+period = 0.1
+execute_period_on_application = false
+modifiers = Array[ExtResource("1_xfk4h")]([SubResource("Resource_xfk4h")])
 metadata/_custom_type_script = "uid://cp3a3p1xfgyd2"

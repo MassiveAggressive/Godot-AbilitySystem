@@ -2,13 +2,10 @@ class_name ActiveEffect extends Resource
 
 var target_ability_system: AbilitySystemBase
 var handle: ActiveEffectHandle
-
 var source_effect_spec: EffectSpec
-
 var duration_interval_id: int
 var period_interval_id: int
-
-var affected_aggregators: Dictionary[String, Aggregator]
+var affected_attributes: Array[String]
 
 func _init(_target_ability_system: AbilitySystemBase, _source_effect_spec: EffectSpec, _handle: ActiveEffectHandle) -> void:
 	target_ability_system = _target_ability_system
@@ -17,14 +14,15 @@ func _init(_target_ability_system: AbilitySystemBase, _source_effect_spec: Effec
 
 func ApplyEffect() -> void:
 	match source_effect_spec.duration_policy:
-		Util.EDurationPolicy.INSTANT, Util.EDurationPolicy.INFINITE:
-			affected_aggregators = target_ability_system.SetupModifiers(source_effect_spec.modifiers, source_effect_spec.duration_policy, handle)
+		Util.EDurationPolicy.INFINITE:
+			affected_attributes = target_ability_system.SetupModifiers(source_effect_spec.modifiers, handle)
 		Util.EDurationPolicy.DURATION:
 			if source_effect_spec.period > 0.0:
-				affected_aggregators = target_ability_system.SetupModifiers(source_effect_spec.modifiers, Util.EDurationPolicy.INSTANT, handle)
+				if source_effect_spec.execute_period_on_application:
+					target_ability_system.ApplyInstantModifiers(source_effect_spec.modifiers)
 				period_interval_id = TimerManager.CreateInterval(self, Period, source_effect_spec.period, false)
 			else:
-				affected_aggregators = target_ability_system.SetupModifiers(source_effect_spec.modifiers, source_effect_spec.duration_policy, handle)
+				affected_attributes = target_ability_system.SetupModifiers(source_effect_spec.modifiers, handle)
 				
 			duration_interval_id = TimerManager.CreateInterval(target_ability_system, target_ability_system.RemoveActiveEffectByHandle.bind(handle), source_effect_spec.duration)
 
@@ -32,7 +30,7 @@ func RemoveEffect() -> void:
 	if source_effect_spec.period > 0.0:
 		TimerManager.RemoveInterval(period_interval_id)
 		
-	target_ability_system.RemoveModifiers(affected_aggregators.keys(), handle)
+	target_ability_system.RemoveModifiers(affected_attributes, handle)
 
 func Period() -> void:
-	target_ability_system.SetupModifiers(source_effect_spec.modifiers, Util.EDurationPolicy.INSTANT, handle)
+	target_ability_system.ApplyInstantModifiers(source_effect_spec.modifiers)

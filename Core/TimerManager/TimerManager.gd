@@ -50,6 +50,9 @@ func OnSceneChanged() -> void:
 	CreateTimerHolder()
 
 func OnIntervalTimeout(id: int) -> void:
-	intervals[id].method.call()
-	if intervals[id].one_shot:
+	if intervals[id].owner:
+		intervals[id].method.call()
+		if intervals[id].one_shot:
+			RemoveInterval(id)
+	else:
 		RemoveInterval(id)
