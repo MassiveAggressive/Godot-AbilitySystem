@@ -37,9 +37,9 @@ func GetAttributeBaseValue(attribute_name: String) -> float:
 
 func SetAttributeValue(attribute_name: String, new_value: float) -> void:
 	attributes[attribute_name].current_value = new_value
-	print(attribute_name, " cuurent: ", new_value)
+	print(attribute_name, " current: ", new_value)
 
-func GetAttributeCurrentValue(attribute_name: String) -> float:
+func GetAttributeValue(attribute_name: String) -> float:
 	return attributes[attribute_name].current_value
 
 func CreateAggregator(attribute_name: String) -> Aggregator:
@@ -62,12 +62,11 @@ func GetAggregator(attribute_name: String) -> Aggregator:
 		return CreateAggregator(attribute_name)
 
 func PreAttributeBaseChange(attribute_name: String, new_value: NewValue) -> void:
+	if attribute_name == "MaxHealth":
+		new_value.value = clamp(new_value.value, 0.0, INF)
 	if attribute_name == "Health":
-		new_value.value = clamp(new_value.value, 0.0, 100.0)
+		new_value.value = clamp(new_value.value, 0.0, GetAttributeValue("MaxHealth"))
 
 func PreAttributeChange(attribute_name: String, new_value: NewValue) -> void:
 	if attribute_name == "Health":
-		new_value.value = clamp(new_value.value, 0.0, 100.0)
-
-func PostAttributeChange(attribute_name: String, new_value: float, old_value) -> void:
-	pass
+		new_value.value = clamp(new_value.value, 0.0, INF)

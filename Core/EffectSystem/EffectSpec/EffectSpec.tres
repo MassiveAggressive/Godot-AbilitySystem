@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dkjk6xo1nm3f2" path="res://Core/AttributeSystem/AttributePicker/AttributePicker.gd" id="1_bcmfc"]
 [ext_resource type="Script" uid="uid://c0wwbu8w1bvv3" path="res://Core/EffectSystem/EffectSpec/EffectSpec.gd" id="1_txna7"]
-[ext_resource type="Script" uid="uid://bsqkg78t6rya7" path="res://Core/AttributeSystem/AttributeModifier/AttributeModifier.gd" id="2_1nc22"]
+[ext_resource type="Script" uid="uid://bsqkg78t6rya7" path="res://Core/AttributeSystem/ModifierMagnitude/ModifierMagnitude.gd" id="2_1nc22"]
 [ext_resource type="Resource" uid="uid://d334ypkts7cjk" path="res://Game/Effects/DamageEffect.tres" id="4_e35ku"]
 
 [sub_resource type="Resource" id="Resource_5c0cf"]

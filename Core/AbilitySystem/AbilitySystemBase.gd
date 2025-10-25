@@ -44,16 +44,22 @@ func ApplyInstantModifiers(modifiers: Array[AttributeModifierData]) -> void:
 		var attribute_set_name: String = modifier.attribute.get_slice(".", 0)
 		var attribute_name: String = modifier.attribute.get_slice(".", 1)
 		var attribute_set: AttributeSetBase = attribute_sets[attribute_set_name]
-		var aggregator: Aggregator = Aggregator.new(attribute_set.GetAttribute(attribute_name))
+		var base_aggregator: Aggregator = Aggregator.new(attribute_set.GetAttribute(attribute_name))
 		
-		aggregator.AddModifier(null, modifier.modifier)
+		base_aggregator.AddModifier(null, modifier.modifier)
 		
-		var new_value: NewValue = NewValue.new(aggregator.Calculate())
+		var base_new_value: NewValue = NewValue.new(base_aggregator.Calculate())
 		
-		attribute_set.PreAttributeBaseChange(attribute_name, new_value)
-		attribute_set.SetAttributeBaseValue(attribute_name, new_value.value)
+		attribute_set.PreAttributeBaseChange(attribute_name, base_new_value)
+		attribute_set.SetAttributeBaseValue(attribute_name, base_new_value.value)
+		
+		var current_aggregator: Aggregator = attribute_set.GetAggregator(attribute_name)
+		var current_new_value: NewValue = NewValue.new(current_aggregator.Calculate())
+		
+		attribute_set.PreAttributeChange(attribute_name, current_new_value)
+		attribute_set.SetAttributeValue(attribute_name, current_new_value.value)
 
-func SetupModifiers(modifiers: Array[AttributeModifierData], active_effect_handle: ActiveEffectHandle) -> Array[String]:
+func ApplyTemporaryModifiers(modifiers: Array[AttributeModifierData], active_effect_handle: ActiveEffectHandle) -> Array[String]:
 	var affected_attributes: Array[String]
 	
 	for modifier in modifiers:
@@ -73,7 +79,7 @@ func SetupModifiers(modifiers: Array[AttributeModifierData], active_effect_handl
 	
 	return affected_attributes
 
-func RemoveModifiers(attributes: Array[String], active_effect_handle: ActiveEffectHandle) -> void:
+func RemoveTemporaryModifiers(attributes: Array[String], active_effect_handle: ActiveEffectHandle) -> void:
 	for attribute in attributes:
 		var attribute_set_name: String = attribute.get_slice(".", 0)
 		var attribute_name: String = attribute.get_slice(".", 1)

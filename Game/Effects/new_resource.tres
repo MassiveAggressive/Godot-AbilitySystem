@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://cejfv76qismfn"]
+
+[ext_resource type="Script" uid="uid://2bc4l6qsoi3" path="res://Core/AttributeSystem/AttributeModifierData/AttributeModifierData.gd" id="1_f83c7"]
+[ext_resource type="Script" uid="uid://cp3a3p1xfgyd2" path="res://Core/EffectSystem/EffectData/EffectData.gd" id="2_qntsg"]
+
+[resource]
+script = ExtResource("2_qntsg")
+metadata/_custom_type_script = "uid://cp3a3p1xfgyd2"

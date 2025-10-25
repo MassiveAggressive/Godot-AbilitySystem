@@ -27,6 +27,6 @@ func _init(_source_ability_system: AbilitySystemBase = null, _source_effect_data
 			execute_period_on_application = source_effect_data.execute_period_on_application
 			modifiers = source_effect_data.modifiers.duplicate_deep()
 
-func AddModifier(attribute_name: String, attribute_modifier: AttributeModifier) -> void:
-	var attribute_modifier_data: AttributeModifierData = AttributeModifierData.new(attribute_name, attribute_modifier)
+func AddModifier(attribute_name: String, modifier_magnitude: ModifierMagnitude) -> void:
+	var attribute_modifier_data: AttributeModifierData = AttributeModifierData.new(attribute_name, modifier_magnitude)
 	modifiers.append(attribute_modifier_data)

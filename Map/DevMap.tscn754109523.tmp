@@ -16,17 +16,6 @@ func _ready() -> void:
 	var effect: EffectData = preload(\"uid://ea0ol37kagoy\")
 	var effect_spec: EffectSpec = ability_system.MakeEffectSpec(effect)
 	ability_system.ApplyEffectSpecToSelf(effect_spec)
-	
-	var damage: EffectData = preload(\"uid://d334ypkts7cjk\")
-	var effect_spec_1: EffectSpec = ability_system.MakeEffectSpec(damage)
-	ability_system.ApplyEffectSpecToSelf(effect_spec_1)
-	
-	get_tree().create_timer(5.0).timeout.connect(heal)
-
-func heal() -> void:
-	var heal: EffectData = preload(\"uid://ck555mx8w00i6\")
-	var effect_spec_2: EffectSpec = ability_system.MakeEffectSpec(heal)
-	ability_system.ApplyEffectSpecToSelf(effect_spec_2)
 "
 
 [node name="DevMap" type="Node2D"]

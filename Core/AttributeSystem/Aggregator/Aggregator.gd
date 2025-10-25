@@ -1,18 +1,20 @@
 class_name Aggregator extends RefCounted
 
 @export var attribute: AttributeData
-@export var modifiers: Dictionary[ActiveEffectHandle, AttributeModifierArray]
+@export var modifiers: Dictionary[ActiveEffectHandle, ModifierMagnitudeArray]
 
 var additive_modifiers: Array[float]
 var multiplicative_modifiers: Array[float]
 var overrider_modifiers: Array[float]
+var multiplicative_compound_modifiers: Array[float]
+var additive_final_modifiers: Array[float]
 
 func _init(_attribute: AttributeData) -> void:
 	attribute = _attribute
 
-func AddModifier(active_effect_handle: ActiveEffectHandle, modifier: AttributeModifier) -> void:
+func AddModifier(active_effect_handle: ActiveEffectHandle, modifier: ModifierMagnitude) -> void:
 	if !modifiers.has(active_effect_handle):
-		modifiers[active_effect_handle] = AttributeModifierArray.new()
+		modifiers[active_effect_handle] = ModifierMagnitudeArray.new()
 	
 	modifiers[active_effect_handle].array.append(modifier)
 
@@ -37,7 +39,11 @@ func Calculate() -> float:
 					multiplicative_modifiers.append(1 / (modifier.magnitude * modifier.coefficient))
 				Util.EOperator.OVERRIDE:
 					overrider_modifiers.append(modifier.magnitude * modifier.coefficient)
-				
+				Util.EOperator.MULTIPLY_COMPOUND:
+					multiplicative_compound_modifiers.append(modifier.magnitude * modifier.coefficient)
+				Util.EOperator.ADD_FINAL:
+					additive_final_modifiers.append(modifier.magnitude * modifier.coefficient)
+	
 	var additive_total: float = 0.0
 	
 	for modifier in additive_modifiers:
@@ -46,9 +52,19 @@ func Calculate() -> float:
 	var multiplicative_total = 1.0
 	
 	for modifier in multiplicative_modifiers:
-		multiplicative_total *= modifier
+		multiplicative_total += modifier - 1
 	
 	value_result = (attribute.base_value + additive_total) * multiplicative_total
+	
+	for modifier in multiplicative_compound_modifiers:
+		value_result *= modifier
+	
+	var additive_final_total: float = 0.0
+	
+	for modifier in additive_final_modifiers:
+		additive_final_total += modifier
+	
+	value_result += additive_final_total
 	
 	if overrider_modifiers.size() > 0:
 		value_result = overrider_modifiers[overrider_modifiers.size() - 1]
