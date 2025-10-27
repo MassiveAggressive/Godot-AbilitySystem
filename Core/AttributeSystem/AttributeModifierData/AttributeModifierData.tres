@@ -1,11 +1,9 @@
 [gd_resource type="Resource" script_class="AttributeModifierData" load_steps=2 format=3 uid="uid://dbxwg6dkf5s0o"]
 
-[ext_resource type="Script" uid="uid://2bc4l6qsoi3" path="res://Core/AttributeSystem/AttributeModifierData/AttributeModifierData.gd" id="1_s2wvf"]
+[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AttributeSystem/AttributeModifierData/AttributeModifierData.gd" id="1_s2wvf"]
 
 [resource]
 script = ExtResource("1_s2wvf")
 attribute = "AttributeSetBase.Health"
-magnitude_type = 1
-source_attribute = "AttributeSetBase.MaxHealth"
-source_attribute_source = 0
-metadata/_custom_type_script = "uid://2bc4l6qsoi3"
+scalable_float_magnitude = 0.0
+metadata/_custom_type_script = "uid://4bn4y5nlm2tp"

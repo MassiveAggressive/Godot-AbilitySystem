@@ -16,8 +16,8 @@ func CreateNewID() -> int:
 	else:
 		return active_effects.keys().max() + 1
 
-func MakeEffectSpec(effect_data: EffectData) -> EffectSpec:
-	var effect_spec: EffectSpec = EffectSpec.new(self, effect_data)
+func MakeEffectSpec(effect_data: EffectData, effect_context: EffectContext) -> EffectSpec:
+	var effect_spec: EffectSpec = EffectSpec.new(effect_data, effect_context)
 	
 	return effect_spec
 
@@ -67,8 +67,6 @@ func ApplyTemporaryModifiers(modifiers: Array[AttributeModifierData], active_eff
 		var attribute_name: String = modifier.attribute.get_slice(".", 1)
 		var attribute_set: AttributeSetBase = attribute_sets[attribute_set_name]
 		var aggregator: Aggregator = attribute_set.GetAggregator(attribute_name)
-		
-		aggregator.AddModifier(active_effect_handle, modifier.modifier)
 		
 		var new_value: NewValue = NewValue.new(aggregator.Calculate())
 		

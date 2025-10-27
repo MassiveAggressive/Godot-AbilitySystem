@@ -5,7 +5,6 @@ class_name AttributeModifierData extends Resource
 	set(value):
 		attribute = value
 @export var operator: Util.EOperator
-@export var modifier_magnitude: ModifierMagnitude
 
 @export_group("Modifier Magnitude")
 @export var magnitude_type: Util.EMagnitudeType:
@@ -19,9 +18,6 @@ var scalable_float_magnitude: float
 
 var source_attribute: String
 var source_attribute_source: Util.EAttributeSource
-
-func _init(_attribute: String = "", _modifier: ModifierMagnitude = null) -> void:
-	pass
 
 func _validate_property(property: Dictionary) -> void:
 	if property["name"] == "attribute":

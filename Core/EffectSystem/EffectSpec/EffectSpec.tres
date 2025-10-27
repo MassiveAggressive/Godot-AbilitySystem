@@ -1,25 +1,7 @@
-[gd_resource type="Resource" script_class="EffectSpec" load_steps=7 format=3 uid="uid://b1qyr2sxm0t3c"]
+[gd_resource type="Resource" script_class="EffectSpec" load_steps=3 format=3 uid="uid://b1qyr2sxm0t3c"]
 
-[ext_resource type="Script" uid="uid://dkjk6xo1nm3f2" path="res://Core/AttributeSystem/AttributePicker/AttributePicker.gd" id="1_bcmfc"]
-[ext_resource type="Script" uid="uid://c0wwbu8w1bvv3" path="res://Core/EffectSystem/EffectSpec/EffectSpec.gd" id="1_txna7"]
-[ext_resource type="Script" uid="uid://bsqkg78t6rya7" path="res://Core/AttributeSystem/ModifierMagnitude/ModifierMagnitude.gd" id="2_1nc22"]
-[ext_resource type="Resource" uid="uid://d334ypkts7cjk" path="res://Game/Effects/DamageEffect.tres" id="4_e35ku"]
-
-[sub_resource type="Resource" id="Resource_5c0cf"]
-script = ExtResource("1_bcmfc")
-attribute = "AttributeSetBase.Health"
-metadata/_custom_type_script = "uid://dkjk6xo1nm3f2"
-
-[sub_resource type="Resource" id="Resource_6gkxx"]
-script = ExtResource("2_1nc22")
-magnitude = -120.0
-metadata/_custom_type_script = "uid://bsqkg78t6rya7"
+[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AttributeSystem/AttributeModifierData/AttributeModifierData.gd" id="1_iqq8n"]
+[ext_resource type="Script" uid="uid://bbupstqshtc41" path="res://Core/EffectSystem/EffectSpec/EffectSpec.gd" id="1_txna7"]
 
 [resource]
 script = ExtResource("1_txna7")
-source_effect_data = ExtResource("4_e35ku")
-period = null
-modifiers = Dictionary[ExtResource("1_bcmfc"), ExtResource("2_1nc22")]({
-SubResource("Resource_5c0cf"): SubResource("Resource_6gkxx")
-})
-metadata/_custom_type_script = "uid://c0wwbu8w1bvv3"

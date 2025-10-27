@@ -1,0 +1,4 @@
+class_name EffectContext extends Resource
+
+var source_ability_system: AbilitySystemBase
+var target_ability_system: AbilitySystemBase

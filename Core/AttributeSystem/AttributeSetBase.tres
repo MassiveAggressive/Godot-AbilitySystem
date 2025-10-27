@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="AttributeSetBase" load_steps=5 format=3 uid="uid://cie0jf8re8gog"]
 
 [ext_resource type="Script" uid="uid://cawe0ja1u8k2r" path="res://Core/AttributeSystem/AttributeData/AttributeData.gd" id="1_p7w8f"]
-[ext_resource type="Script" uid="uid://cgutah85t6h8k" path="res://Core/AttributeSystem/AttributeSetBase.gd" id="2_jpww4"]
+[ext_resource type="Script" uid="uid://dwpjsms1ibehr" path="res://Core/AttributeSystem/AttributeSetBase.gd" id="2_jpww4"]
 
 [sub_resource type="Resource" id="Resource_p7w8f"]
 script = ExtResource("1_p7w8f")

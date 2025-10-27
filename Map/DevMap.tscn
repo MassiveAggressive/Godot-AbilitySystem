@@ -1,32 +1,14 @@
 [gd_scene load_steps=6 format=3 uid="uid://ccegygbbitvld"]
 
 [ext_resource type="Texture2D" uid="uid://dsjhoi5jt4bm4" path="res://icon.svg" id="1_jj4ik"]
-[ext_resource type="Script" uid="uid://bt7wdx4x1noj2" path="res://Core/AbilitySystem/AbilitySystemBase.gd" id="2_4mt0u"]
+[ext_resource type="Script" uid="uid://d01c6oq8yjxdj" path="res://Core/AbilitySystem/AbilitySystemBase.gd" id="2_4mt0u"]
 [ext_resource type="Resource" uid="uid://cie0jf8re8gog" path="res://Core/AttributeSystem/AttributeSetBase.tres" id="4_2dubv"]
-[ext_resource type="Script" uid="uid://cgutah85t6h8k" path="res://Core/AttributeSystem/AttributeSetBase.gd" id="4_igut8"]
+[ext_resource type="Script" uid="uid://dwpjsms1ibehr" path="res://Core/AttributeSystem/AttributeSetBase.gd" id="4_igut8"]
 
 [sub_resource type="GDScript" id="GDScript_jj4ik"]
 script/source = "extends Sprite2D
 
 @onready var ability_system: AbilitySystemBase = %AbilitySystemBase
-
-var value: int = 3
-
-func _ready() -> void:
-	var effect: EffectData = preload(\"uid://ea0ol37kagoy\")
-	var effect_spec: EffectSpec = ability_system.MakeEffectSpec(effect)
-	ability_system.ApplyEffectSpecToSelf(effect_spec)
-	
-	var damage: EffectData = preload(\"uid://d334ypkts7cjk\")
-	var effect_spec_1: EffectSpec = ability_system.MakeEffectSpec(damage)
-	ability_system.ApplyEffectSpecToSelf(effect_spec_1)
-	
-	get_tree().create_timer(5.0).timeout.connect(heal)
-
-func heal() -> void:
-	var heal: EffectData = preload(\"uid://ck555mx8w00i6\")
-	var effect_spec_2: EffectSpec = ability_system.MakeEffectSpec(heal)
-	ability_system.ApplyEffectSpecToSelf(effect_spec_2)
 "
 
 [node name="DevMap" type="Node2D"]
@@ -42,4 +24,3 @@ script = ExtResource("2_4mt0u")
 attribute_sets = Dictionary[String, ExtResource("4_igut8")]({
 "AttributeSetBase": ExtResource("4_2dubv")
 })
-metadata/_custom_type_script = "uid://bt7wdx4x1noj2"

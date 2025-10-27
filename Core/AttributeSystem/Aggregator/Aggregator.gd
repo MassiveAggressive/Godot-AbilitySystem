@@ -3,6 +3,8 @@ class_name Aggregator extends RefCounted
 @export var attribute: AttributeData
 @export var modifiers: Dictionary[ActiveEffectHandle, ModifierMagnitudeArray]
 
+var dirty: bool = false
+
 var additive_modifiers: Array[float]
 var multiplicative_modifiers: Array[float]
 var overrider_modifiers: Array[float]
@@ -11,12 +13,19 @@ var additive_final_modifiers: Array[float]
 
 func _init(_attribute: AttributeData) -> void:
 	attribute = _attribute
+	
+	attribute.BaseValueChanged.connect(OnAttributeBaseValueChanged)
+
+func OnAttributeBaseValueChanged(value: float) -> void:
+	dirty = true
 
 func AddModifier(active_effect_handle: ActiveEffectHandle, modifier: ModifierMagnitude) -> void:
 	if !modifiers.has(active_effect_handle):
 		modifiers[active_effect_handle] = ModifierMagnitudeArray.new()
 	
 	modifiers[active_effect_handle].array.append(modifier)
+	
+	dirty = true
 
 func RemoveModifier(active_effect_handle: ActiveEffectHandle) -> void:
 	modifiers.erase(active_effect_handle)
@@ -68,5 +77,7 @@ func Calculate() -> float:
 	
 	if overrider_modifiers.size() > 0:
 		value_result = overrider_modifiers[overrider_modifiers.size() - 1]
+	
+	dirty = false
 	
 	return value_result
