@@ -1,7 +1,7 @@
 @tool 
 class_name AttributeSetBase extends Resource
 
-signal AttributeBaseChanged(name: String, value: float)
+signal AttributeBaseChanged(attribute_set: AttributeSetBase, name: String, value: float)
 signal AttributeChanged(name: String, value: float)
 
 @export var attribute_set_name: String
@@ -30,16 +30,14 @@ func GetAttribute(attribute_name: String) -> AttributeData:
 	return attributes[attribute_name]
 
 func SetAttributeBaseValue(attribute_name: String, new_value: float) -> void:
-	attributes[attribute_name].SetBaseValue(new_value)
-	print(attribute_name, " base: ", new_value)
+	attributes[attribute_name].base_value = new_value
 	AttributeBaseChanged.emit(attribute_name, new_value)
 
 func GetAttributeBaseValue(attribute_name: String) -> float:
 	return attributes[attribute_name].base_value
 
 func SetAttributeValue(attribute_name: String, new_value: float) -> void:
-	attributes[attribute_name].SetCurrentValue(new_value)
-	print(attribute_name, " current: ", new_value)
+	attributes[attribute_name].current_value = new_value
 	AttributeChanged.emit(attribute_name, new_value)
 
 func GetAttributeValue(attribute_name: String) -> float:

@@ -23,7 +23,7 @@ func ApplyEffect() -> void:
 		Util.EDurationPolicy.DURATION:
 			if source_effect_spec.period > 0.0:
 				if source_effect_spec.execute_period_on_application:
-					target_ability_system.ApplyInstantModifiers(source_effect_spec.modifiers)
+					target_ability_system.ApplyInstantModifiers(source_effect_spec.modifiers, source_effect_spec.effect_context)
 				period_interval_id = TimerManager.CreateInterval(self, Period, source_effect_spec.period, false)
 			else:
 				affected_attributes = target_ability_system.ApplyTemporaryModifiers(source_effect_spec.modifiers, handle)
@@ -37,4 +37,4 @@ func RemoveEffect() -> void:
 	target_ability_system.RemoveTemporaryModifiers(affected_attributes, handle)
 
 func Period() -> void:
-	target_ability_system.ApplyInstantModifiers(source_effect_spec.modifiers)
+	target_ability_system.ApplyInstantModifiers(source_effect_spec.modifiers, source_effect_spec.effect_context)

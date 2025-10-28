@@ -9,13 +9,6 @@
 script/source = "extends Sprite2D
 
 @onready var ability_system: AbilitySystemBase = %AbilitySystemBase
-
-func _ready() -> void:
-	var effect: EffectData = preload(\"uid://bxyswdi87lbl8\")
-	var effect_context: EffectContext = EffectContext.new(ability_system, ability_system)
-	var effect_spec: EffectSpec = ability_system.MakeEffectSpec(effect, effect_context)
-	
-	ability_system.ApplyEffectSpecToSelf(effect_spec)
 "
 
 [node name="DevMap" type="Node2D"]

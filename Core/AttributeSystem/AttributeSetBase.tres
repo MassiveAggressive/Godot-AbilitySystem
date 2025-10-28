@@ -5,10 +5,12 @@
 
 [sub_resource type="Resource" id="Resource_p7w8f"]
 script = ExtResource("1_p7w8f")
+value = 750.0
 metadata/_custom_type_script = "uid://cawe0ja1u8k2r"
 
 [sub_resource type="Resource" id="Resource_jpww4"]
 script = ExtResource("1_p7w8f")
+value = 1000.0
 metadata/_custom_type_script = "uid://cawe0ja1u8k2r"
 
 [resource]
@@ -18,4 +20,3 @@ attributes = Dictionary[String, ExtResource("1_p7w8f")]({
 "Health": SubResource("Resource_p7w8f"),
 "MaxHealth": SubResource("Resource_jpww4")
 })
-metadata/_custom_type_script = "uid://cgutah85t6h8k"
