@@ -83,8 +83,42 @@ func ApplyInstantModifiers(modifiers: Array[AttributeModifierData], effect_conte
 		attribute_set.PreAttributeBaseChange(attribute_name, new_value)
 		attribute_set.SetAttributeBaseValue(attribute_name, new_value.value)
 
-func ApplyTemporaryModifiers(modifiers: Array[AttributeModifierData], active_effect_handle: ActiveEffectHandle) -> Array[String]:
-	return []
+func ApplyTemporaryModifiers(modifiers: Array[AttributeModifierData], effect_context: EffectContext, active_effect_handle: ActiveEffectHandle) -> Array[String]:
+	var affected_attributes: Array[String]
+	
+	for modifier in modifiers:
+		var attribute_set_name: String = modifier.attribute.get_slice(".", 0)
+		var attribute_name: String = modifier.attribute.get_slice(".", 1)
+		var attribute_set: AttributeSetBase = attribute_sets[attribute_set_name]
+		var aggregator: Aggregator = attribute_set.GetAggregator(attribute_name)
+		
+		match modifier.magnitude_type:
+			Util.EMagnitudeType.SCALABLE_FLOAT:
+				var scalable_float_modifier: ScalableFloatModifier = ScalableFloatModifier.new(modifier.operator, modifier.coefficient, modifier.scalable_float_magnitude)
+				
+				aggregator.AddScalableFloatModifier(null, scalable_float_modifier)
+			Util.EMagnitudeType.ATTRIBUTE_BASED:
+				var attribute_capture: AttributeCapture
+				var source_attribute_set_name: String = modifier.source_attribute.get_slice(".", 0)
+				var source_attribute_name: String = modifier.source_attribute.get_slice(".", 1)
+				
+				match modifier.source_attribute_source:
+					Util.EAttributeSource.SOURCE:
+						attribute_capture = AttributeCapture.new(effect_context.source_ability_system.GetAttributeSet(source_attribute_set_name), source_attribute_name)
+					Util.EAttributeSource.TARGET:
+						attribute_capture = AttributeCapture.new(effect_context.target_ability_system.GetAttributeSet(source_attribute_set_name), source_attribute_name)
+				var attribute_based_modifier: AttributeBasedModifier = AttributeBasedModifier.new(modifier.operator, modifier.coefficient, attribute_capture)
+				
+				aggregator.AddAttributeBasedModifier(null, attribute_based_modifier)
+		
+		var new_value: NewValue = NewValue.new(aggregator.Calculate())
+		
+		attribute_set.PreAttributeChange(attribute_name, new_value)
+		attribute_set.SetAttributeValue(attribute_name, new_value.value)
+		
+		affected_attributes.append(modifier.attribute)
+	
+	return affected_attributes
 
 func RemoveTemporaryModifiers(attributes: Array[String], active_effect_handle: ActiveEffectHandle) -> void:
 	pass

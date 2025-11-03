@@ -7,12 +7,16 @@
 script = ExtResource("1_c62eb")
 attribute = "AttributeSetBase.Health"
 magnitude_type = 1
-coefficient = 0.25
+coefficient = -0.01
 source_attribute = "AttributeSetBase.MaxHealth"
 source_attribute_source = 0
 metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
 
 [resource]
 script = ExtResource("2_ws4x4")
+duration_policy = 1
+duration = 5.0
+period = 0.1
+execute_period_on_application = false
 modifiers = Array[ExtResource("1_c62eb")]([SubResource("Resource_c62eb")])
 metadata/_custom_type_script = "uid://c83e46hibooh8"
