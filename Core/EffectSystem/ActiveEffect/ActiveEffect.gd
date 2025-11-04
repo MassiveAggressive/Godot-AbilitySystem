@@ -12,11 +12,7 @@ func _init(_target_ability_system: AbilitySystemBase, _source_effect_spec: Effec
 	source_effect_spec = _source_effect_spec
 	handle = _handle
 
-func ApplyEffect() -> void:
-	for modifier in source_effect_spec.modifiers:
-		match modifier.magnitude_type:
-			pass
-	
+func ApplyEffect() -> void:	
 	match source_effect_spec.duration_policy:
 		Util.EDurationPolicy.INFINITE:
 			affected_attributes = target_ability_system.ApplyTemporaryModifiers(source_effect_spec.modifiers, source_effect_spec.effect_context, handle)

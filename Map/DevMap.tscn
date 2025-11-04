@@ -16,12 +16,6 @@ func _ready() -> void:
 	var effect_spec: EffectSpec = ability_system.MakeEffectSpec(effect, effect_context)
 	
 	ability_system.ApplyEffectSpecToSelf(effect_spec)
-	
-	var effect1: EffectData = preload(\"uid://cxxb7mkmd7hj2\")
-	var effect_context1: EffectContext = EffectContext.new(ability_system, ability_system)
-	var effect_spec1: EffectSpec = ability_system.MakeEffectSpec(effect1, effect_context1)
-	
-	ability_system.ApplyEffectSpecToSelf(effect_spec1)
 "
 
 [node name="DevMap" type="Node2D"]

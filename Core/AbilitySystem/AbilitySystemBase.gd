@@ -96,7 +96,7 @@ func ApplyTemporaryModifiers(modifiers: Array[AttributeModifierData], effect_con
 			Util.EMagnitudeType.SCALABLE_FLOAT:
 				var scalable_float_modifier: ScalableFloatModifier = ScalableFloatModifier.new(modifier.operator, modifier.coefficient, modifier.scalable_float_magnitude)
 				
-				aggregator.AddScalableFloatModifier(null, scalable_float_modifier)
+				aggregator.AddScalableFloatModifier(active_effect_handle, scalable_float_modifier)
 			Util.EMagnitudeType.ATTRIBUTE_BASED:
 				var attribute_capture: AttributeCapture
 				var source_attribute_set_name: String = modifier.source_attribute.get_slice(".", 0)
@@ -109,7 +109,7 @@ func ApplyTemporaryModifiers(modifiers: Array[AttributeModifierData], effect_con
 						attribute_capture = AttributeCapture.new(effect_context.target_ability_system.GetAttributeSet(source_attribute_set_name), source_attribute_name)
 				var attribute_based_modifier: AttributeBasedModifier = AttributeBasedModifier.new(modifier.operator, modifier.coefficient, attribute_capture)
 				
-				aggregator.AddAttributeBasedModifier(null, attribute_based_modifier)
+				aggregator.AddAttributeBasedModifier(active_effect_handle, attribute_based_modifier)
 		
 		var new_value: NewValue = NewValue.new(aggregator.Calculate())
 		
@@ -121,7 +121,18 @@ func ApplyTemporaryModifiers(modifiers: Array[AttributeModifierData], effect_con
 	return affected_attributes
 
 func RemoveTemporaryModifiers(attributes: Array[String], active_effect_handle: ActiveEffectHandle) -> void:
-	pass
+	for attribute in attributes:
+		var attribute_set_name: String = attribute.get_slice(".", 0)
+		var attribute_name: String = attribute.get_slice(".", 1)
+		var attribute_set: AttributeSetBase = attribute_sets[attribute_set_name]
+		var aggregator: Aggregator = attribute_set.GetAggregator(attribute_name)
+		
+		aggregator.RemoveModifier(active_effect_handle)
+		
+		var new_value: NewValue = NewValue.new(aggregator.Calculate())
+		
+		attribute_set.PreAttributeChange(attribute_name, new_value)
+		attribute_set.SetAttributeValue(attribute_name, new_value.value)
 
 func RemoveActiveEffectByID(id: int) -> void:
 	if active_effects.has(id):

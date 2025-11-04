@@ -7,7 +7,7 @@
 script = ExtResource("1_xygd5")
 attribute = "AttributeSetBase.Health"
 magnitude_type = 1
-coefficient = 0.1
+coefficient = 0.15
 source_attribute = "AttributeSetBase.MaxHealth"
 source_attribute_source = 0
 metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
@@ -16,6 +16,5 @@ metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
 script = ExtResource("2_dag12")
 duration_policy = 1
 duration = 5.0
-period = 0.25
 modifiers = Array[ExtResource("1_xygd5")]([SubResource("Resource_c62eb")])
 metadata/_custom_type_script = "uid://c83e46hibooh8"
