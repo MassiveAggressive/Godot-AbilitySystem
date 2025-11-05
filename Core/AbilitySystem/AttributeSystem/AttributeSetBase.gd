@@ -1,8 +1,8 @@
 @tool 
 class_name AttributeSetBase extends Resource
 
-signal AttributeBaseChanged(attribute_set: AttributeSetBase, name: String, value: float)
-signal AttributeChanged(name: String, value: float)
+signal AttributeBaseChanged(attribute_name: String, value: float)
+signal AttributeChanged(attribute_name: String, value: float)
 
 @export var attribute_set_name: String
 

@@ -9,19 +9,11 @@ var active_effects: Dictionary[int, ActiveEffect]
 
 func _ready() -> void:
 	owner_node = get_parent()
-	
-	for attribute_set in attribute_sets.values():
-		attribute_set = attribute_set as AttributeSetBase
-		
-		attribute_set.AttributeBaseChanged.connect(OnAttributeBaseChanged)
 
 func GetAttributeSet(attribute_set_name: String) -> AttributeSetBase:
 	if attribute_sets.has(attribute_set_name):
 		return attribute_sets[attribute_set_name]
 	return null
-
-func OnAttributeBaseChanged(attribute_name: String, value: float) -> void:
-	print(attribute_name, ": ", value)
 
 func CreateNewID() -> int:
 	if active_effects.is_empty():
