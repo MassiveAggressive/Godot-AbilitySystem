@@ -2,7 +2,7 @@
 class_name AttributePicker extends Resource
 
 static var editor_attributes: Dictionary
-static var attributes_path: String = "res://Core/AttributeSystem/AttributePicker/EditorAttributes.txt"
+static var attributes_path: String = "res://Core/AbilitySystem/AttributeSystem/AttributePicker/EditorAttributes.txt"
 
 var attribute: String
 

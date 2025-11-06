@@ -49,13 +49,13 @@ func ApplyInstantModifiers(modifiers: Array[AttributeModifierData], effect_conte
 		var attribute_set_name: String = modifier.attribute.get_slice(".", 0)
 		var attribute_name: String = modifier.attribute.get_slice(".", 1)
 		var attribute_set: AttributeSetBase = attribute_sets[attribute_set_name]
-		var aggregator: Aggregator = Aggregator.new(attribute_set.GetAttribute(attribute_name))
+		var base_aggregator: Aggregator = Aggregator.new(attribute_set.GetAttribute(attribute_name))
 		
 		match modifier.magnitude_type:
 			Util.EMagnitudeType.SCALABLE_FLOAT:
 				var scalable_float_modifier: ScalableFloatModifier = ScalableFloatModifier.new(modifier.operator, modifier.coefficient, modifier.scalable_float_magnitude)
 				
-				aggregator.AddScalableFloatModifier(null, scalable_float_modifier)
+				base_aggregator.AddScalableFloatModifier(null, scalable_float_modifier)
 			Util.EMagnitudeType.ATTRIBUTE_BASED:
 				var attribute_capture: AttributeCapture
 				var source_attribute_set_name: String = modifier.source_attribute.get_slice(".", 0)
@@ -68,12 +68,17 @@ func ApplyInstantModifiers(modifiers: Array[AttributeModifierData], effect_conte
 						attribute_capture = AttributeCapture.new(effect_context.target_ability_system.GetAttributeSet(source_attribute_set_name), source_attribute_name)
 				var attribute_based_modifier: AttributeBasedModifier = AttributeBasedModifier.new(modifier.operator, modifier.coefficient, attribute_capture)
 				
-				aggregator.AddAttributeBasedModifier(null, attribute_based_modifier)
+				base_aggregator.AddAttributeBasedModifier(null, attribute_based_modifier)
 		
-		var new_value: NewValue = NewValue.new(aggregator.Calculate())
+		var new_base_value: NewValue = NewValue.new(base_aggregator.Calculate())
 		
-		attribute_set.PreAttributeBaseChange(attribute_name, new_value)
-		attribute_set.SetAttributeBaseValue(attribute_name, new_value.value)
+		attribute_set.PreAttributeBaseChange(attribute_name, new_base_value)
+		attribute_set.SetAttributeBaseValue(attribute_name, new_base_value.value)
+		
+		var new_current_value: NewValue = NewValue.new(attribute_set.GetAggregator(attribute_name).Calculate())
+		
+		attribute_set.PreAttributeChange(attribute_name, new_current_value)
+		attribute_set.SetAttributeValue(attribute_name, new_current_value.value)
 
 func ApplyTemporaryModifiers(modifiers: Array[AttributeModifierData], effect_context: EffectContext, active_effect_handle: ActiveEffectHandle) -> Array[String]:
 	var affected_attributes: Array[String]
