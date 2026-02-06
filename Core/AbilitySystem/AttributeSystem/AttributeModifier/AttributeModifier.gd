@@ -1,5 +1,5 @@
 @tool
-class_name AttributeModifierData extends Resource
+class_name AttributeModifier extends Resource
 
 var attribute: String:
 	set(value):

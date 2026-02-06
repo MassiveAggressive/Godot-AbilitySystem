@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="HealthAttributeSet" format=3 uid="uid://bmvgaa1yxvllh"]
+
+[ext_resource type="Script" uid="uid://cawe0ja1u8k2r" path="res://Core/AbilitySystem/AttributeSystem/AttributeData/AttributeData.gd" id="1_m7mq4"]
+[ext_resource type="Script" uid="uid://hv5clpfh7eka" path="res://Game/AttributeSet/HealthAttributeSet.gd" id="2_1pfbg"]
+
+[sub_resource type="Resource" id="Resource_1pfbg"]
+script = ExtResource("1_m7mq4")
+value = 99.9999999999997
+metadata/_custom_type_script = "uid://cawe0ja1u8k2r"
+
+[sub_resource type="Resource" id="Resource_m7mq4"]
+script = ExtResource("1_m7mq4")
+value = 99.9999999999997
+metadata/_custom_type_script = "uid://cawe0ja1u8k2r"
+
+[resource]
+script = ExtResource("2_1pfbg")
+attribute_set_name = "HealthAttributeSet"
+attributes = Dictionary[String, ExtResource("1_m7mq4")]({
+"Health": SubResource("Resource_1pfbg"),
+"MaxHealth": SubResource("Resource_m7mq4")
+})
+metadata/_custom_type_script = "uid://hv5clpfh7eka"

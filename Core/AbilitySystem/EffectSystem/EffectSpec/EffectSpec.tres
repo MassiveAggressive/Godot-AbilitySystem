@@ -1,7 +1,21 @@
-[gd_resource type="Resource" script_class="EffectSpec" load_steps=3 format=3 uid="uid://b1qyr2sxm0t3c"]
+[gd_resource type="Resource" script_class="EffectSpec" format=3 uid="uid://b1qyr2sxm0t3c"]
 
-[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/AttributeModifierData/AttributeModifierData.gd" id="1_iqq8n"]
+[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/AttributeModifier/AttributeModifier.gd" id="1_iqq8n"]
 [ext_resource type="Script" uid="uid://bbupstqshtc41" path="res://Core/AbilitySystem/EffectSystem/EffectSpec/EffectSpec.gd" id="1_txna7"]
+
+[sub_resource type="Resource" id="Resource_c62eb"]
+script = ExtResource("1_iqq8n")
+attribute = "AttributeSetBase.Health"
+operator = 0
+coefficient = 0.15
+magnitude_type = 1
+source_attribute = "AttributeSetBase.MaxHealth"
+source_attribute_source = 0
+metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
 
 [resource]
 script = ExtResource("1_txna7")
+duration_policy = 1
+duration = 5.0
+execute_period_on_application = true
+modifiers = Array[ExtResource("1_iqq8n")]([SubResource("Resource_c62eb")])

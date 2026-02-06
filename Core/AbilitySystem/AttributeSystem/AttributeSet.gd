@@ -1,5 +1,5 @@
 @tool 
-class_name AttributeSetBase extends Resource
+class_name AttributeSet extends Resource
 
 signal AttributeBaseChanged(attribute_name: String, value: float)
 signal AttributeChanged(attribute_name: String, value: float)

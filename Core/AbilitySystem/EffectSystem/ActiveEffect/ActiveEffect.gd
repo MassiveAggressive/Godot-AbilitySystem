@@ -1,16 +1,23 @@
 class_name ActiveEffect extends Resource
 
-var target_ability_system: AbilitySystemBase
-var handle: ActiveEffectHandle
 var source_effect_spec: EffectSpec
+var handle: ActiveEffectHandle
+
+var effect_context: EffectContext
+
+var target_ability_system: AbilitySystem
+var source_ability_system: AbilitySystem
+
 var duration_interval_id: int
 var period_interval_id: int
 var affected_attributes: Array[String]
 
-func _init(_target_ability_system: AbilitySystemBase, _source_effect_spec: EffectSpec, _handle: ActiveEffectHandle) -> void:
-	target_ability_system = _target_ability_system
+func _init(_source_effect_spec: EffectSpec, _handle: ActiveEffectHandle) -> void:
 	source_effect_spec = _source_effect_spec
 	handle = _handle
+	effect_context = source_effect_spec.effect_context
+	target_ability_system = effect_context.target_ability_system
+	source_ability_system = effect_context.source_ability_system
 
 func ApplyEffect() -> void:	
 	match source_effect_spec.duration_policy:

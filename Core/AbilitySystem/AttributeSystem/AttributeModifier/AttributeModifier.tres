@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AttributeModifierData" format=3 uid="uid://dbxwg6dkf5s0o"]
+
+[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/AttributeModifier/AttributeModifier.gd" id="1_s2wvf"]
+
+[resource]
+script = ExtResource("1_s2wvf")
+attribute = "AttributeSetBase.MaxHealth"
+operator = 0
+coefficient = 1.0
+magnitude_type = 0
+scalable_float_magnitude = 0.0
+metadata/_custom_type_script = "uid://4bn4y5nlm2tp"

@@ -1,21 +1,40 @@
-[gd_resource type="Resource" script_class="EffectData" load_steps=4 format=3 uid="uid://bxyswdi87lbl8"]
+[gd_resource type="Resource" script_class="Effect" format=3 uid="uid://bxyswdi87lbl8"]
 
-[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/AttributeModifierData/AttributeModifierData.gd" id="1_c62eb"]
-[ext_resource type="Script" uid="uid://c83e46hibooh8" path="res://Core/AbilitySystem/EffectSystem/EffectData/EffectData.gd" id="2_ws4x4"]
+[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/AttributeModifier/AttributeModifier.gd" id="1_c62eb"]
+[ext_resource type="Script" uid="uid://c83e46hibooh8" path="res://Core/AbilitySystem/EffectSystem/Effect/Effect.gd" id="2_ws4x4"]
 
 [sub_resource type="Resource" id="Resource_c62eb"]
 script = ExtResource("1_c62eb")
-attribute = "AttributeSetBase.Health"
+attribute = "HealthAttributeSet.Health"
+operator = 0
+coefficient = -0.00999999999999997
 magnitude_type = 1
-coefficient = -0.01
-source_attribute = "AttributeSetBase.MaxHealth"
+source_attribute = "HealthAttributeSet.MaxHealth"
 source_attribute_source = 0
+metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
+
+[sub_resource type="Resource" id="Resource_eaaso"]
+script = ExtResource("1_c62eb")
+attribute = "HealthAttributeSet.Health"
+operator = 0
+coefficient = 1.0
+magnitude_type = 0
+scalable_float_magnitude = -9.99999999999997
+metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
+
+[sub_resource type="Resource" id="Resource_2e2x5"]
+script = ExtResource("1_c62eb")
+attribute = "HealthAttributeSet.MaxHealth"
+operator = 0
+coefficient = 1.0
+magnitude_type = 0
+scalable_float_magnitude = 99.9999999999997
 metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
 
 [resource]
 script = ExtResource("2_ws4x4")
 duration_policy = 1
-duration = 2.0
+duration = 10.0
 period = 0.1
-modifiers = Array[ExtResource("1_c62eb")]([SubResource("Resource_c62eb")])
+modifiers = Array[ExtResource("1_c62eb")]([SubResource("Resource_c62eb"), SubResource("Resource_eaaso"), SubResource("Resource_2e2x5")])
 metadata/_custom_type_script = "uid://c83e46hibooh8"
