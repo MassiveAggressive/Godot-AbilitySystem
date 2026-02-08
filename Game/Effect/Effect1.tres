@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://dhmg276vvd5ms"]
+[gd_resource type="Resource" script_class="Effect" format=3 uid="uid://dhmg276vvd5ms"]
 
 [ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/AttributeModifier/AttributeModifier.gd" id="1_xygd5"]
 [ext_resource type="Script" uid="uid://c83e46hibooh8" path="res://Core/AbilitySystem/EffectSystem/Effect/Effect.gd" id="2_dag12"]
@@ -7,7 +7,7 @@
 script = ExtResource("1_xygd5")
 attribute = "HealthAttributeSet.Health"
 operator = 0
-coefficient = 0.15
+coefficient = -0.15
 magnitude_type = 1
 source_attribute = "HealthAttributeSet.MaxHealth"
 source_attribute_source = 0
@@ -16,6 +16,6 @@ metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
 [resource]
 script = ExtResource("2_dag12")
 duration_policy = 1
-duration = 5.0
+duration = 15.0
 modifiers = Array[ExtResource("1_xygd5")]([SubResource("Resource_c62eb")])
 metadata/_custom_type_script = "uid://c83e46hibooh8"

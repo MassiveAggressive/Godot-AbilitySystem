@@ -11,12 +11,11 @@ script/source = "extends Sprite2D
 @onready var ability_system: AbilitySystem = %AbilitySystemBase
 
 func _ready() -> void:
-	var effect: Effect = preload(\"uid://bxyswdi87lbl8\")
+	var effect: Effect = preload(\"uid://dhmg276vvd5ms\")
 	var effect_context: EffectContext = EffectContext.new(ability_system, ability_system)
 	var effect_spec: EffectSpec = ability_system.MakeEffectSpec(effect, effect_context)
-	effect_spec.CalculateModifiers()
 	
-	ability_system.ApplyEffectSpec(effect_spec)
+	ability_system.ApplyEffectSpecToSelf(effect_spec)
 "
 
 [node name="DevMap" type="Node2D" unique_id=284755657]
@@ -32,4 +31,3 @@ script = ExtResource("2_4mt0u")
 attribute_sets = Dictionary[String, ExtResource("4_igut8")]({
 "HealthAttributeSet": ExtResource("4_2dubv")
 })
-attributes = null
