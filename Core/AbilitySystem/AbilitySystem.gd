@@ -4,6 +4,7 @@ class_name AbilitySystem extends Node
 var owner_node: Node
 
 @export var attribute_sets: Dictionary[String, AttributeSet]
+var aggregators: Dictionary[String, Aggregator]
 
 var active_effects: Dictionary[int, ActiveEffect]
 
@@ -18,15 +19,14 @@ func GetAttributeSet(_attribute_set_name: String) -> AttributeSet:
 	return null
 
 func FindOrCreateAttributeAggregator(attribute: String) -> Aggregator:
-	var attribute_set_name: String = attribute.get_slice(".", 0)
-	var attribute_name: String = attribute.get_slice(".", 1)
+	if aggregators.has(attribute):
+		return aggregators[attribute]
 	
-	var attribute_set: AttributeSet = GetAttributeSet(attribute_set_name)
+	var aggregator: Aggregator = GetAttributeSet(attribute).CreateAggregator(attribute.get_slice(".", 1))
 	
-	if attribute_set.HasAggregator(attribute_name):
-		return attribute_set.GetAggregator(attribute_name)
-	else:
-		return attribute_set.CreateAggregator(attribute_name)
+	aggregators[attribute] = aggregator
+	
+	return aggregator
 
 func CreateNewID() -> int:
 	if active_effects.is_empty():
@@ -44,7 +44,7 @@ func ApplyEffectSpecToTarget(effect_spec: EffectSpec, effect_target: AbilitySyst
 
 func ApplyEffectSpecToSelf(effect_spec: EffectSpec) -> ActiveEffectHandle:
 	if effect_spec.duration == Util.EDurationPolicy.INSTANT:
-		var calculated_modifiers: Dictionary[String, Array] = effect_spec.GetCalculatedModifiers()
+		var calculated_modifiers: Array[EvaluatedAttributeData] = effect_spec.GetCalculatedModifiers()
 		
 		ApplyInstantModifiers(calculated_modifiers)
 		
@@ -59,78 +59,43 @@ func ApplyEffectSpecToSelf(effect_spec: EffectSpec) -> ActiveEffectHandle:
 		
 		return active_effect_handle
 
-func ApplyInstantModifiers(modifiers: Dictionary[String, Array]) -> void:
-	for attribute in modifiers.keys():
-		for modifier in modifiers[attribute]:
-			modifier = modifier as AggregatorModifier
-			
-			var attribute_set_name: String = attribute.get_slice(".", 0)
-			var attribute_name: String = attribute.get_slice(".", 1)
-			var attribute_set: AttributeSet = attribute_sets[attribute_set_name]
-			var attribute_base_value: float = attribute_set.GetAttributeBaseValue(attribute_name)
-			
-			match modifier.operator: 
-					Util.EOperator.ADD:
-						attribute_base_value += modifier.magnitude
-					Util.EOperator.MULTIPLY:
-						attribute_base_value *= modifier.magnitude
-					Util.EOperator.DIVIDE:
-						attribute_base_value /= modifier.magnitude
-					Util.EOperator.MULTIPLY_COMPOUND:
-						attribute_base_value *= modifier.magnitude
-					Util.EOperator.ADD_FINAL:
-						attribute_base_value += modifier.magnitude
-					Util.EOperator.OVERRIDE:
-						attribute_base_value = modifier.magnitude
-			
-			SetAttributeBaseValue(attribute, attribute_base_value)
+func ApplyInstantModifiers(modifiers: Array[EvaluatedAttributeData]) -> void:
+	for modifier in modifiers:
+		var attribute_base_value: float = modifier.attribute.attribute_data.base_value
+		
+		attribute_base_value = ModifierCalculator.Calculate(attribute_base_value, [modifier.modifier])
+		
+		SetAttributeBaseValue(modifier.attribute, attribute_base_value)
 
-func AddModifiersToAggregator(modifiers: Dictionary[String, Array], active_effect_handle: ActiveEffectHandle) -> void:
-	for attribute in modifiers.keys():
-		for modifier in modifiers[attribute]:
-			modifier = modifier as AggregatorModifier
-			
-			var attribute_set_name: String = attribute.get_slice(".", 0)
-			var attribute_name: String = attribute.get_slice(".", 1)
-			var attribute_set: AttributeSet = attribute_sets[attribute_set_name]
-			var aggregator: Aggregator = attribute_set.GetAggregator(attribute_name)
-			
-			aggregator.AddModifier(active_effect_handle, modifier)
-			
-			SetAttributeValue(attribute, aggregator.Calculate())
+func AddModifiersToAggregator(modifiers: Array[EvaluatedAttributeData], active_effect_handle: ActiveEffectHandle) -> void:
+	for modifier in modifiers:
+		var aggregator: Aggregator = modifier.attribute.attribute_set.GetAggregator(modifier.attribute.attribute_name)
+		
+		aggregator.AddModifier(active_effect_handle, modifier.modifier)
+		
+		SetAttributeValue(modifier.attribute, aggregator.Calculate())
 
-func RemoveModifiersFromAggregator(affected_attributes: Array[String], active_effect_handle: ActiveEffectHandle) -> void:
+func RemoveModifiersFromAggregator(affected_attributes: Array[Attribute], active_effect_handle: ActiveEffectHandle) -> void:
 	for attribute in affected_attributes:
-		var attribute_set_name: String = attribute.get_slice(".", 0)
-		var attribute_name: String = attribute.get_slice(".", 1)
-		var attribute_set: AttributeSet = attribute_sets[attribute_set_name]
-		var aggregator: Aggregator = attribute_set.GetAggregator(attribute_name)
+		var aggregator: Aggregator = attribute.attribute_set.GetAggregator(attribute.attribute_name)
 		
 		aggregator.RemoveModifier(active_effect_handle)
 		
 		SetAttributeValue(attribute, aggregator.Calculate())
 
-func SetAttributeBaseValue(attribute: String, value: float) -> void:
-	var attribute_set_name: String = attribute.get_slice(".", 0)
-	var attribute_name: String = attribute.get_slice(".", 1)
-	var attribute_set: AttributeSet = attribute_sets[attribute_set_name]
-	
+func SetAttributeBaseValue(attribute: Attribute, value: float) -> void:
 	var new_base_value: NewValue = NewValue.new(value)
 	
-	attribute_set.PreAttributeBaseChange(attribute_name, new_base_value)
-	attribute_set.SetAttributeBaseValue(attribute_name, new_base_value.value)
+	attribute.attribute_set.PreAttributeBaseChange(attribute.attribute_name, new_base_value)
+	attribute.attribute_set.SetAttributeBaseValue(attribute.attribute_name, new_base_value.value)
 	
-	SetAttributeValue(attribute, attribute_set.GetAggregator(attribute_name).Calculate())
+	SetAttributeValue(attribute, attribute.attribute_set.GetAggregator(attribute.attribute_name).Calculate())
 
-func SetAttributeValue(attribute: String, value: float) -> void:
-	var attribute_set_name: String = attribute.get_slice(".", 0)
-	var attribute_name: String = attribute.get_slice(".", 1)
-	var attribute_set: AttributeSet = attribute_sets[attribute_set_name]
-	
+func SetAttributeValue(attribute: Attribute, value: float) -> void:
 	var new_current_value: NewValue = NewValue.new(value)
 	
-	attribute_set.PreAttributeChange(attribute_name, new_current_value)
-	attribute_set.SetAttributeValue(attribute_name, new_current_value.value)
+	attribute.attribute_set.PreAttributeChange(attribute.attribute_name, new_current_value)
+	attribute.attribute_set.SetAttributeValue(attribute.attribute_name, new_current_value.value)
 
 func RemoveActiveEffectByID(id: int) -> void:
 	if active_effects.has(id):

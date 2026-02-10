@@ -4,4 +4,4 @@ class_name Effect extends Resource
 @export var duration: float
 @export var period: float
 @export var execute_period_on_application: bool = true
-@export var modifiers: Array[AttributeModifier]
+@export var modifiers: Array[EffectAttributeModifier]

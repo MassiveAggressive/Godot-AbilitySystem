@@ -1,4 +1,4 @@
-class_name AggregatorModifier extends RefCounted
+class_name CalculatedAttributeModifier extends RefCounted
 
 var operator: Util.EOperator
 var magnitude: float = 0.0

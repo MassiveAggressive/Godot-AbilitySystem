@@ -1,18 +1,23 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://b7gobjwqa45ut"]
 
-[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/AttributeModifier/AttributeModifier.gd" id="1_c62eb"]
+[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/EffectAttributeModifier/EffectAttributeModifier.gd" id="1_c62eb"]
 [ext_resource type="Script" uid="uid://c83e46hibooh8" path="res://Core/AbilitySystem/EffectSystem/Effect/Effect.gd" id="2_ws4x4"]
 
 [sub_resource type="Resource" id="Resource_c62eb"]
 script = ExtResource("1_c62eb")
 attribute = "HealthAttributeSet.Health"
 operator = 0
-coefficient = 1.0
-magnitude_type = 0
-scalable_float_magnitude = -25.0
+coefficient = -0.999999999999997
+magnitude_type = 1
+source_attribute = "HealthAttributeSet.MaxHealth"
+source_attribute_source = 1
+source_attribute_coefficient = 0.00999999999999997
 metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
 
 [resource]
 script = ExtResource("2_ws4x4")
+duration_policy = 1
+duration = 19.99999999999994
+period = 0.999999999999997
 modifiers = Array[ExtResource("1_c62eb")]([SubResource("Resource_c62eb")])
 metadata/_custom_type_script = "uid://c83e46hibooh8"

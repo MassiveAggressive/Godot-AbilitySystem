@@ -10,7 +10,7 @@ var source_ability_system: AbilitySystem
 
 var duration_interval_id: int
 var period_interval_id: int
-var affected_attributes: Array[String]
+var affected_attributes: Array[Attribute]
 
 func _init(_source_effect_spec: EffectSpec, _handle: ActiveEffectHandle) -> void:
 	source_effect_spec = _source_effect_spec
@@ -20,12 +20,15 @@ func _init(_source_effect_spec: EffectSpec, _handle: ActiveEffectHandle) -> void
 	source_ability_system = effect_context.source_ability_system
 
 func ApplyEffect() -> void:
-	var calculated_modifiers: Dictionary[String, Array] = source_effect_spec.GetCalculatedModifiers()
+	var calculated_modifiers: Array[EvaluatedAttributeData] = source_effect_spec.GetCalculatedModifiers()
+	
+	for modifier in calculated_modifiers:
+		modifier.active_effect_handle = handle
+		affected_attributes.append(modifier.attribute)
 	
 	match source_effect_spec.duration_policy:
 		Util.EDurationPolicy.INFINITE:
 			target_ability_system.AddModifiersToAggregator(calculated_modifiers, handle)
-			affected_attributes = calculated_modifiers.keys()
 		Util.EDurationPolicy.DURATION:
 			if source_effect_spec.period > 0.0:
 				if source_effect_spec.execute_period_on_application:
@@ -33,8 +36,7 @@ func ApplyEffect() -> void:
 				period_interval_id = TimerManager.CreateInterval(self, Period, source_effect_spec.period, false)
 			else:
 				target_ability_system.AddModifiersToAggregator(calculated_modifiers, handle)
-				affected_attributes = calculated_modifiers.keys()
-				
+			
 			duration_interval_id = TimerManager.CreateInterval(target_ability_system, target_ability_system.RemoveActiveEffectByHandle.bind(handle), source_effect_spec.duration)
 
 func RemoveEffect() -> void:
