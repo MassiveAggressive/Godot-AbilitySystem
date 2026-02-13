@@ -1,10 +1,6 @@
 @tool
-class_name EffectAttributeModifier extends Resource
+class_name EffectModifierMagnitude extends Resource
 
-var attribute: String:
-	set(value):
-		attribute = value
-var operator: Util.EOperator
 var magnitude_type: Util.EMagnitudeType:
 	set(value):
 		magnitude_type = value
@@ -17,46 +13,30 @@ var source_attribute: String
 var source_attribute_source: Util.EAttributeSource
 var source_attribute_coefficient: float = 1.0
 
+func CalculateMagnitude(source_effect_spec: EffectSpec) -> float:
+	match magnitude_type:
+		Util.EMagnitudeType.SCALABLE_FLOAT:
+			return scalable_float_magnitude * coefficient
+		Util.EMagnitudeType.ATTRIBUTE_BASED:
+			var source_attribute_set_name: String = source_attribute.get_slice(".", 0)
+			var source_attribute_name: String = source_attribute.get_slice(".", 1)
+			var source_attribute_set: AttributeSet
+			
+			match source_attribute_source:
+				Util.EAttributeSource.SOURCE:
+					source_attribute_set = source_effect_spec.effect_context.source_ability_system.GetAttributeSet(source_attribute_set_name)
+				Util.EAttributeSource.TARGET:
+					source_attribute_set = source_effect_spec.effect_context.target_ability_system.GetAttributeSet(source_attribute_set_name)
+			
+			var attribute_value: float = source_attribute_set.GetAttributeValue(source_attribute_name)
+			
+			return attribute_value * source_attribute_coefficient * coefficient
+	
+	return 0.0
+
 func _get_property_list() -> Array[Dictionary]:
 	var properties: Array[Dictionary]
-	var attribute_strings: Array[String]
 	
-	for attribute_set_name: String in AttributePicker.editor_attributes:
-		for attribute_name in AttributePicker.editor_attributes[attribute_set_name]:
-			attribute_strings.append(attribute_set_name + "." + attribute_name)
-	
-	properties.append(
-		{
-			"name": "attribute",
-			"type": TYPE_STRING,
-			"usage": PROPERTY_USAGE_DEFAULT,
-			"hint": PROPERTY_HINT_ENUM,
-			"hint_string": ",".join(attribute_strings)
-		}
-	)
-	
-	var operator_array: Array[String]
-	
-	for key in Util.EOperator.keys():
-		key = key as String
-		operator_array.append(key.to_lower().replace("_", " ").capitalize())
-	
-	properties.append(
-		{
-			"name": "operator",
-			"type": TYPE_INT,
-			"usage": PROPERTY_USAGE_DEFAULT,
-			"hint": PROPERTY_HINT_ENUM,
-			"hint_string": ",".join(operator_array)
-		}
-	)
-	properties.append(
-		{
-			"name": "Modifier Magnitude",
-			"type": TYPE_NIL,
-			"usage": PROPERTY_USAGE_CATEGORY
-		}
-	)
 	properties.append(
 		{
 			"name": "coefficient",
@@ -103,6 +83,13 @@ func _get_property_list() -> Array[Dictionary]:
 					"usage": PROPERTY_USAGE_SUBGROUP
 				}
 			)
+			
+			var attribute_strings: Array[String]
+	
+			for attribute_set_name: String in AttributePicker.editor_attributes:
+				for attribute_name in AttributePicker.editor_attributes[attribute_set_name]:
+					attribute_strings.append(attribute_set_name + "." + attribute_name)
+			
 			properties.append(
 				{
 					"name": "source_attribute",

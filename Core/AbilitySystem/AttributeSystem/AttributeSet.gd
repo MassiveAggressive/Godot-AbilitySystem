@@ -62,8 +62,20 @@ func GetAggregator(attribute_name: String) -> Aggregator:
 	else:
 		return CreateAggregator(attribute_name)
 
+func PreEffectExecute(data: AttributeModifierEvaluatedData) -> bool:
+	return true
+
+func PostEffectExecute(data: AttributeModifierEvaluatedData) -> void:
+	pass
+
 func PreAttributeBaseChange(attribute_name: String, new_value: NewValue) -> void:
 	pass
 
+func PostAttributeBaseChange(attribute_name: String, old_value: float, new_value: float) -> void:
+	pass
+
 func PreAttributeChange(attribute_name: String, new_value: NewValue) -> void:
+	pass
+
+func PostAttributeChange(attribute_name: String, old_value: float, new_value: float) -> void:
 	pass

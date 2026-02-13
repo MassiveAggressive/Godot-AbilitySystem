@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EffectModifierData" format=3 uid="uid://dbxwg6dkf5s0o"]
+
+[ext_resource type="Script" uid="uid://c58m12hin7gu8" path="res://Core/AbilitySystem/AttributeSystem/EffectModifierMagnitude/EffectModifierMagnitude.gd" id="1_0fbup"]
+[ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/EffectModifierData/EffectModifierData.gd" id="1_s2wvf"]
+
+[sub_resource type="Resource" id="Resource_0fbup"]
+script = ExtResource("1_0fbup")
+coefficient = 1.0
+magnitude_type = 1
+source_attribute = "HealthAttributeSet.Health"
+source_attribute_source = 1
+source_attribute_coefficient = 1.0
+
+[resource]
+script = ExtResource("1_s2wvf")
+attribute = "HealthAttributeSet.Health"
+operator = 0
+magnitude = SubResource("Resource_0fbup")
+metadata/_custom_type_script = "uid://4bn4y5nlm2tp"

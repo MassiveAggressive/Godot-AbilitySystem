@@ -1,4 +1,4 @@
-class_name EvaluatedAttributeData extends Resource
+class_name AttributeModifierEvaluatedData extends Resource
 
 var target_ability_system: AbilitySystem
 var attribute: Attribute

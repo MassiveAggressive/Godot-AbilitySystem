@@ -10,20 +10,12 @@ script/source = "extends Sprite2D
 
 @onready var ability_system: AbilitySystem = %AbilitySystemBase
 
-var values: Dictionary[String, Array] = {
-	\"a\": [1, 2, 3],
-	\"b\": [4, 5, 6]
-}
-
 func _ready() -> void:
 	var effect: Effect = preload(\"uid://b7gobjwqa45ut\")
 	var effect_context: EffectContext = EffectContext.new(ability_system, ability_system)
 	var effect_spec: EffectSpec = ability_system.MakeEffectSpec(effect, effect_context)
 	
 	ability_system.ApplyEffectSpecToSelf(effect_spec)
-
-func pr(val: Array[int]) -> void:
-	print(val)
 "
 
 [node name="DevMap" type="Node2D" unique_id=284755657]

@@ -1,6 +1,7 @@
 {
 	"HealthAttributeSet": [
 		"Health",
+		"HealthRegenTimer",
 		"MaxHealth"
 	]
 }

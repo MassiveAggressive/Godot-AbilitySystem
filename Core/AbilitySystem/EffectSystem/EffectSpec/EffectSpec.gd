@@ -6,18 +6,19 @@ class_name EffectSpec extends Resource
 		source_effect_data = value
 		if source_effect_data:
 			duration_policy = source_effect_data.duration_policy
-			duration = source_effect_data.duration
+			duration_magnitude = source_effect_data.duration_magnitude
 			period = source_effect_data.period
 			modifiers = source_effect_data.modifiers
 			execute_period_on_application = source_effect_data.execute_period_on_application
 
 @export var duration_policy: Util.EDurationPolicy
-@export var duration: float
+@export var duration_magnitude: EffectModifierMagnitude
 @export var period: float
 @export var execute_period_on_application: bool
-@export var modifiers: Array[EffectAttributeModifier]
+@export var modifiers: Array[EffectModifierData]
 
-var calculated_modifiers: Array[EvaluatedAttributeData]
+var calculated_modifiers: Array[AttributeModifierEvaluatedData]
+var calculated_duration: float = 0.0
 
 var effect_context: EffectContext
 
@@ -26,44 +27,34 @@ func _init(_source_effect_data: Effect = null, _effect_context: EffectContext = 
 	effect_context = _effect_context
 	
 	CalculateModifiers()
+	CalculateDuration()
 
-func AddModifier(modifier: EffectAttributeModifier) -> void:
+func AddModifier(modifier: EffectModifierData) -> void:
 	modifiers.append(modifier)
 	
 	calculated_modifiers.append(CalculateModifier(modifier))
 
-func GetCalculatedModifiers() -> Array[EvaluatedAttributeData]:
+func GetCalculatedModifiers() -> Array[AttributeModifierEvaluatedData]:
 	return calculated_modifiers
+
+func GetCalculatedDurationMagnitude() -> float:
+	return calculated_duration
 
 func CalculateModifiers() -> void:
 	for modifier in modifiers:
 		calculated_modifiers.append(CalculateModifier(modifier))
 
-func CalculateModifier(modifier: EffectAttributeModifier) -> EvaluatedAttributeData:
+func CalculateDuration() -> void:
+	calculated_duration = duration_magnitude.CalculateMagnitude(self)
+
+func CalculateModifier(modifier: EffectModifierData) -> AttributeModifierEvaluatedData:
 	var attribute_set_name: String = modifier.attribute.get_slice(".", 0)
 	var attribute_name: String = modifier.attribute.get_slice(".", 1)
 	var attribute_set: AttributeSet = effect_context.target_ability_system.GetAttributeSet(attribute_set_name)
-	var magnitude: float 
-	
-	match modifier.magnitude_type:
-		Util.EMagnitudeType.SCALABLE_FLOAT:
-			magnitude = modifier.scalable_float_magnitude * modifier.coefficient
-		Util.EMagnitudeType.ATTRIBUTE_BASED:
-			var source_attribute_set: AttributeSet
-			
-			match modifier.source_attribute_source:
-				Util.EAttributeSource.SOURCE:
-					source_attribute_set = effect_context.source_ability_system.GetAttributeSet(attribute_set_name)
-				Util.EAttributeSource.TARGET:
-					source_attribute_set = effect_context.target_ability_system.GetAttributeSet(attribute_set_name)
-			
-			var attribute_value: float = source_attribute_set.GetAttributeValue(attribute_name)
-			
-			magnitude = attribute_value * modifier.source_attribute_coefficient * modifier.coefficient
-	
+	var magnitude: float = modifier.magnitude.CalculateMagnitude(self)	
 	var calculated_modifier: CalculatedAttributeModifier = CalculatedAttributeModifier.new(modifier.operator, magnitude)
 	var attribute: Attribute = Attribute.new(attribute_set, attribute_name, attribute_set.GetAttribute(attribute_name))
-	var evaluated_attribute_data: EvaluatedAttributeData = EvaluatedAttributeData.new(effect_context.target_ability_system, \
+	var evaluated_attribute_data: AttributeModifierEvaluatedData = AttributeModifierEvaluatedData.new(effect_context.target_ability_system, \
 	attribute, calculated_modifier, self)
 	
 	return evaluated_attribute_data
