@@ -45,7 +45,8 @@ func CalculateModifiers() -> void:
 		calculated_modifiers.append(CalculateModifier(modifier))
 
 func CalculateDuration() -> void:
-	calculated_duration = duration_magnitude.CalculateMagnitude(self)
+	if duration_magnitude != null:
+		calculated_duration = duration_magnitude.CalculateMagnitude(self)
 
 func CalculateModifier(modifier: EffectModifierData) -> AttributeModifierEvaluatedData:
 	var attribute_set_name: String = modifier.attribute.get_slice(".", 0)

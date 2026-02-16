@@ -20,5 +20,5 @@ func Calculate(base_value: float = attribute.base_value) -> float:
 	
 	for array in modifiers.values():
 		all_modifiers.append_array(array)
-		
+	
 	return ModifierCalculator.Calculate(base_value, all_modifiers)

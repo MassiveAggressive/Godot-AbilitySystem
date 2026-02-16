@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://ccegygbbitvld"]
+
+[ext_resource type="Texture2D" uid="uid://dsjhoi5jt4bm4" path="res://icon.svg" id="1_jj4ik"]
+[ext_resource type="Script" uid="uid://d01c6oq8yjxdj" path="res://Core/AbilitySystem/AbilitySystem.gd" id="2_4mt0u"]
+[ext_resource type="Resource" uid="uid://bmvgaa1yxvllh" path="res://Game/AttributeSet/HealthAttributeSet.tres" id="4_2dubv"]
+[ext_resource type="Script" uid="uid://dwpjsms1ibehr" path="res://Core/AbilitySystem/AttributeSystem/AttributeSet.gd" id="4_igut8"]
+
+[sub_resource type="GDScript" id="GDScript_jj4ik"]
+script/source = "extends Sprite2D
+
+@onready var ability_system: AbilitySystem = %AbilitySystemBase
+
+#func _ready() -> void:
+#	var effect: Effect = preload(\"uid://b7gobjwqa45ut\")
+#	var effect_context: EffectContext = EffectContext.new(ability_system, ability_system)
+#	var effect_spec: EffectSpec = ability_system.MakeEffectSpec(effect, effect_context)
+#	
+#	ability_system.ApplyEffectSpecToSelf(effect_spec)
+"
+
+[node name="DevMap" type="Node2D" unique_id=284755657]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1444206209]
+position = Vector2(341, 325)
+texture = ExtResource("1_jj4ik")
+script = SubResource("GDScript_jj4ik")
+
+[node name="AbilitySystemBase" type="Node" parent="Sprite2D" unique_id=1469660550]
+unique_name_in_owner = true
+script = ExtResource("2_4mt0u")
+attribute_sets = Dictionary[String, ExtResource("4_igut8")]({
+"HealthAttributeSet": ExtResource("4_2dubv")
+})

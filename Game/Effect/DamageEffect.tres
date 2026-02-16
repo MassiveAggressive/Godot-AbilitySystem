@@ -1,8 +1,26 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://b7gobjwqa45ut"]
 
 [ext_resource type="Script" uid="uid://4bn4y5nlm2tp" path="res://Core/AbilitySystem/AttributeSystem/EffectModifierData/EffectModifierData.gd" id="1_c62eb"]
+[ext_resource type="Script" uid="uid://c58m12hin7gu8" path="res://Core/AbilitySystem/AttributeSystem/EffectModifierMagnitude/EffectModifierMagnitude.gd" id="1_ws4x4"]
 [ext_resource type="Script" uid="uid://c83e46hibooh8" path="res://Core/AbilitySystem/EffectSystem/Effect/Effect.gd" id="2_ws4x4"]
+
+[sub_resource type="Resource" id="Resource_ws4x4"]
+script = ExtResource("1_ws4x4")
+coefficient = 1.0
+magnitude_type = 1
+source_attribute = "HealthAttributeSet.MaxHealth"
+source_attribute_source = 0
+source_attribute_coefficient = 1.5
+metadata/_custom_type_script = "uid://c58m12hin7gu8"
+
+[sub_resource type="Resource" id="Resource_qouwa"]
+script = ExtResource("1_c62eb")
+attribute = "HealthAttributeSet.MaxHealth"
+operator = 5
+magnitude = SubResource("Resource_ws4x4")
+metadata/_custom_type_script = "uid://4bn4y5nlm2tp"
 
 [resource]
 script = ExtResource("2_ws4x4")
+modifiers = Array[ExtResource("1_c62eb")]([SubResource("Resource_qouwa")])
 metadata/_custom_type_script = "uid://c83e46hibooh8"

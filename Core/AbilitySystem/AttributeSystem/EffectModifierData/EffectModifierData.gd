@@ -52,7 +52,9 @@ func _get_property_list() -> Array[Dictionary]:
 		{
 			"name": "magnitude",
 			"type": TYPE_OBJECT,
-			"usage": PROPERTY_USAGE_DEFAULT
+			"usage": PROPERTY_USAGE_DEFAULT,
+			"hint": PROPERTY_HINT_RESOURCE_TYPE,
+			"hint_string": "EffectModifierMagnitude"
 		}
 	)
 	
